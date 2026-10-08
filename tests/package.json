@@ -1,0 +1,6 @@
+{
+  "name": "blood-bank-tests",
+  "private": true,
+  "type": "module",
+  "description": "Jest (backend) and Vitest (frontend) test suites"
+}
