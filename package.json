@@ -1,0 +1,21 @@
+{
+  "name": "smart-blood-donor-management-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full-stack blood donor management and emergency response system (React + Express/MongoDB + FastAPI)",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:ml": "cd ml-service && python -m uvicorn app.main:app --host 127.0.0.1 --port 8000",
+    "start:backend": "npm --prefix backend start",
+    "build": "npm --prefix frontend run build",
+    "seed": "npm --prefix backend run seed",
+    "reset": "npm --prefix backend run reset",
+    "lint": "npm --prefix frontend run lint",
+    "test": "npm --prefix backend test && npm --prefix frontend test && cd ml-service && python -m pytest -q"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6",
+    "vite": "^8.3.4"
+  }
+}
