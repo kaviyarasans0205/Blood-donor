@@ -4,6 +4,7 @@
   "private": true,
   "description": "Full-stack blood donor management and emergency response system (React + Express/MongoDB + FastAPI)",
   "scripts": {
+    "dev": "concurrently -k -n backend,frontend -c blue,magenta \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "npm --prefix backend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:ml": "cd ml-service && python -m uvicorn app.main:app --host 127.0.0.1 --port 8000",

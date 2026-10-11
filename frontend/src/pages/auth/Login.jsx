@@ -28,7 +28,12 @@ export default function Login() {
       const from = location.state?.from;
       navigate(from && from !== '/login' ? from : dashboardFor(user.role), { replace: true });
     } catch (err) {
-      toast.error(extractErrorMessage(err));
+      const serverIssue = !err?.status || err.status >= 500;
+      toast.error(
+        serverIssue
+          ? 'Unable to sign in. Please check your credentials or try again later.'
+          : extractErrorMessage(err)
+      );
     } finally {
       setSubmitting(false);
     }
