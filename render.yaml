@@ -59,12 +59,15 @@ services:
 
   # ─────────────────────────────────────────
   # 3. React Frontend (Static Site)
+  # rootDir=frontend means Render cds into frontend/
+  # before running build — so "dist" is correct publish path
   # ─────────────────────────────────────────
   - type: web
     name: blood-bank-frontend
     runtime: static
-    buildCommand: npm install --prefix frontend && npm run build --prefix frontend
-    staticPublishPath: frontend/dist
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
         sync: false
