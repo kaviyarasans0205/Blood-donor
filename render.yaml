@@ -1,0 +1,75 @@
+services:
+  # ─────────────────────────────────────────
+  # 1. Node.js Backend API
+  # ─────────────────────────────────────────
+  - type: web
+    name: blood-bank-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false          # Set manually in Render dashboard
+      - key: JWT_SECRET
+        generateValue: true  # Render auto-generates a secure random value
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: JWT_COOKIE_MAX_AGE
+        value: 604800000
+      - key: CORS_ORIGIN
+        sync: false          # Set to your frontend Render URL after deploy
+      - key: ML_SERVICE_URL
+        sync: false          # Set to your ML service Render URL after deploy
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX
+        value: 300
+      - key: AUTH_RATE_LIMIT_MAX
+        value: 20
+      - key: EMAIL_HOST
+        sync: false
+      - key: EMAIL_PORT
+        value: 587
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASSWORD
+        sync: false
+      - key: EMAIL_FROM
+        value: noreply@bloodbank.app
+    healthCheckPath: /health
+
+  # ─────────────────────────────────────────
+  # 2. Python ML / FastAPI Service
+  # ─────────────────────────────────────────
+  - type: web
+    name: blood-bank-ml
+    runtime: python
+    rootDir: ml-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ML_HOST
+        value: 0.0.0.0
+    healthCheckPath: /health
+
+  # ─────────────────────────────────────────
+  # 3. React Frontend (Static Site)
+  # ─────────────────────────────────────────
+  - type: web
+    name: blood-bank-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false          # Set to your backend Render URL after deploy
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
