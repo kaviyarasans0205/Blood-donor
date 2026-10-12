@@ -14,17 +14,17 @@ services:
       - key: PORT
         value: 5000
       - key: MONGO_URI
-        sync: false          # Set manually in Render dashboard
+        sync: false
       - key: JWT_SECRET
-        generateValue: true  # Render auto-generates a secure random value
+        generateValue: true
       - key: JWT_EXPIRES_IN
         value: 7d
       - key: JWT_COOKIE_MAX_AGE
         value: 604800000
       - key: CORS_ORIGIN
-        sync: false          # Set to your frontend Render URL after deploy
+        sync: false
       - key: ML_SERVICE_URL
-        sync: false          # Set to your ML service Render URL after deploy
+        sync: false
       - key: RATE_LIMIT_WINDOW_MS
         value: 900000
       - key: RATE_LIMIT_MAX
@@ -63,12 +63,11 @@ services:
   - type: web
     name: blood-bank-frontend
     runtime: static
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    buildCommand: npm install --prefix frontend && npm run build --prefix frontend
+    staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL
-        sync: false          # Set to your backend Render URL after deploy
+        sync: false
     routes:
       - type: rewrite
         source: /*
